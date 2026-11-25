@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Внутренний мир «Глобус» — Голосование за Манифест КО</title>
+<style>
+  :root {
+    --green: #008E38;
+    --green-dark: #0A5C28;
+    --green-soft: #EBF7EF;
+    --orange: #EC6608;
+    --orange-dark: #B84A00;
+    --orange-soft: #FFF3E8;
+    --card: rgba(255, 255, 255, 0.94);
+    --card-solid: #FFFFFF;
+    --ink: #1F2937;
+    --mute: #4B5563;
+    --border: rgba(209, 213, 219, 0.85);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.45;
+    min-height: 100vh;
+    /* Полноэкранный фон: Карта корпоративной культуры «Внутренний мир Глобус» */
+    background-color: #1E3A5F;
+    background-image:
+      linear-gradient(180deg, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.36) 100%),
+      url('https://drive.google.com/thumbnail?id=1TCkwRoLR9-KRSAd0VG2L_vbfO1mzaiEa&sz=w1920');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  /* Верхняя шапка */
+  .topbar {
+    background: linear-gradient(90deg, rgba(236, 102, 8, 0.95) 0%, rgba(244, 123, 32, 0.95) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+  .topbar h1 { font-size: 19px; font-weight: 800; letter-spacing: 0.2px; }
+  .topbar .sub { font-size: 13px; opacity: 0.94; }
+  .badge-stage {
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 20px auto 48px auto;
+    padding: 0 14px;
+  }
+  .container.tv-wide {
+    max-width: 1360px;
+    padding: 0 24px;
+  }
+
+  .card {
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  }
+  .card h2 { font-size: 18px; margin-bottom: 8px; color: var(--ink); }
+  .card p.hint { font-size: 14px; color: var(--mute); margin-bottom: 12px; }
+
+  label.field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--ink);
+  }
+  select, input[type="text"], textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background: var(--card-solid);
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  textarea { min-height: 76px; resize: vertical; }
+  select:focus, input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--green);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-orange { background: var(--orange); color: #fff; }
+  .btn-outline { background: rgba(255, 255, 255, 0.92); color: var(--ink); border: 1.5px solid var(--border); }
+  .btn-full { width: 100%; }
+
+  /* Вкладки 5 ценностей */
+  .val-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .val-tab {
+    flex: 1 1 auto;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--card-solid);
+    color: var(--ink);
+    cursor: pointer;
+    text-align: center;
+  }
+  .val-tab.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .val-tab.done {
+    border-color: var(--green);
+    background: var(--green-soft);
+    color: var(--green-dark);
+  }
+  .val-tab.active.done {
+    background: var(--green);
+    color: #fff;
+  }
+
+  /* Карточки выбора на голосовании */
+  .vote-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin: 12px 0 8px 0;
+  }
+  .vote-section-title.do-title { background: var(--green-soft); color: var(--green-dark); }
+  .vote-section-title.dont-title { background: var(--orange-soft); color: var(--orange-dark); }
+
+  .vote-option {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background: var(--card-solid);
+    font-size: 15px;
+    transition: all 0.15s;
+  }
+  .vote-option.selected-do {
+    border-color: var(--green);
+    background: var(--green-soft);
+    font-weight: 600;
+  }
+  .vote-option.selected-dont {
+    border-color: var(--orange);
+    background: var(--orange-soft);
+    font-weight: 600;
+  }
+
+  /* Сообщения и баннеры */
+  .msg {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .msg-ok { background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--green); }
+  .msg-err { background: #FEF2F2; color: #991B1B; border: 1px solid #EF4444; }
+
+  .conn-error {
+    max-width: 720px;
+    margin: 14px auto 0 auto;
+    padding: 0 14px;
+  }
+
+  .all-done-banner {
+    background: rgba(235, 247, 239, 0.96);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--green);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    color: var(--green-dark);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  }
+  .all-done-banner h3 { font-size: 17px; margin-bottom: 6px; }
+  .all-done-banner p { font-size: 14px; color: var(--ink); }
+
+  .wait-banner {
+    background: rgba(255, 243, 232, 0.95);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+  }
+  .wait-banner h2 {
+    font-size: 18px;
+    color: var(--orange-dark);
+    margin-bottom: 10px;
+  }
+  .wait-banner p {
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .wait-pulse {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--orange);
+    color: var(--orange-dark);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-top: 4px;
+  }
+
+  /* Экран ТВ тренера */
+  .tv-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    margin-bottom: 18px;
+  }
+  .tv-btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tv-grid-2 {
+    display: grid;
+    grid-template-columns: 330px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .tv-grid-2 { grid-template-columns: 1fr; } }
+
+  .qr-box {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--green);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  }
+  .qr-box img {
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin: 10px auto;
+    border-radius: 8px;
+    background: #fff;
+  }
+  .qr-url {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green-dark);
+    word-break: break-all;
+    margin-top: 6px;
+  }
+  .qr-short-box {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    text-align: left;
+  }
+  .qr-short-box input {
+    font-size: 12px;
+    padding: 7px 9px;
+    margin-bottom: 6px;
+  }
+
+  /* Матрица готовности команд */
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table.matrix th, table.matrix td {
+    border: 1px solid var(--border);
+    padding: 10px 8px;
+    text-align: center;
+  }
+  table.matrix th { background: #F9FAFB; font-weight: 700; }
+  .cell-ok { background: var(--green-soft); color: var(--green-dark); font-weight: 800; }
+  .cell-wait { color: #9CA3AF; }
+  .lead-tag { display: block; font-size: 11px; color: var(--mute); font-weight: 500; margin-top: 2px; }
+
+  /* Живые столбики на ТВ */
+  .tv-val-card {
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  }
+  .tv-val-header {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--orange-dark);
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--orange-soft);
+    padding-bottom: 6px;
+  }
+  .tv-two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 820px) { .tv-two-cols { grid-template-columns: 1fr; } }
+
+  .bar-row { margin-bottom: 10px; }
+  .bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 4px;
+    gap: 8px;
+  }
+  .bar-votes { font-weight: 800; white-space: nowrap; }
+  .bar-track {
+    height: 10px;
+    background: #E5E7EB;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill-do { height: 100%; background: var(--green); border-radius: 999px; transition: width 0.35s; }
+  .bar-fill-dont { height: 100%; background: var(--orange); border-radius: 999px; transition: width 0.35s; }
+
+  /* Итоговый Манифест ТОП-5 */
+  .manifest-winner {
+    border-left: 5px solid var(--green);
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .manifest-winner h3 { color: var(--orange-dark); font-size: 17px; margin-bottom: 8px; }
+  .win-box-do { background: var(--green-soft); padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 15px; }
+  .win-box-dont { background: var(--orange-soft); padding: 10px 12px; border-radius: 8px; font-size: 15px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>Внутренний мир «Глобус» • Манифест отдела КО</h1>
+    <div class="sub">Интерактивный сбор и голосование за правила команды</div>
+  </div>
+  <div id="stageBadge" class="badge-stage">Подключение...</div>
+</div>
+
+<!-- Ошибка подключения (если скрипт ещё не обновлён) -->
+<div id="globalErrBox" class="conn-error hidden">
+  <div class="msg msg-err" id="globalErrText"></div>
+</div>
+
+<!-- ==================== ЭКРАН УЧАСТНИКА (СМАРТФОН) ==================== -->
+<div id="userApp" class="container hidden">
+  <!-- Ввод кода комнаты (если открыли сайт напрямую без QR-кода) -->
+  <div class="card hidden" id="roomCodeCard">
+    <h2>Введите код комнаты с экрана ТВ</h2>
+    <p class="hint">Обычно комната открывается сама при сканировании QR-кода. Если вы открыли ссылку вручную, введите 5-значный код с экрана переговорной (например, <strong>G4821</strong>).</p>
+    <label class="field-label" for="manualRoomInput">Код комнаты:</label>
+    <input type="text" id="manualRoomInput" placeholder="Например: G4821" style="text-transform:uppercase;" />
+    <button class="btn btn-green btn-full" onclick="joinRoomByCode()">Войти в комнату</button>
+    <div id="roomCodeMsg"></div>
+  </div>
+
+  <!-- Анкета входа и верификации -->
+  <div class="card" id="teamSetupCard">
+    <h2>1. Представьтесь и выберите вашу мини-группу</h2>
+    <p class="hint">На этапе ввода правил заполнять формулировки сможет только <strong>первый верифицированный участник</strong> от команды. Остальные участники команды останутся на странице ожидания и автоматически перейдут к голосованию, когда его откроет тренер.</p>
+    <label class="field-label" for="myTeamSelect">Ваша мини-группа (из Модуля 3):</label>
+    <select id="myTeamSelect">
+      <option value="">— Выберите команду —</option>
+      <option value="Команда 1">Команда 1</option>
+      <option value="Команда 2">Команда 2</option>
+      <option value="Команда 3">Команда 3</option>
+      <option value="Команда 4">Команда 4</option>
+      <option value="Команда 5">Команда 5</option>
+    </select>
+    <label class="field-label" for="myNameInput">Ваше имя (обязательно):</label>
+    <input type="text" id="myNameInput" placeholder="Например: Алексей" />
+    <button class="btn btn-green btn-full" id="btnSaveProfile" onclick="saveProfile()">Пройти верификацию и продолжить</button>
+    <div id="setupMsg"></div>
+  </div>
+
+  <!-- Экран ожидания для остальных участников команды -->
+  <div id="userWaitView" class="hidden">
+    <div class="wait-banner">
+      <h2>Ожидайте начала голосования</h2>
+      <p id="waitLeadMessage">Один из участников вашей команды уже прошёл верификацию. Оставайтесь на этой странице и дождитесь начала голосования.</p>
+      <p style="font-size:13px; color:var(--mute);">Как только тренер откроет голосование, поле выбора правил откроется на этом экране автоматически.</p>
+      <div class="wait-pulse">Вы подключены: <span id="waitTeamInfo"></span></div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <p class="hint" style="margin-bottom:8px;">Экран проверяет статус автоматически каждые 5 секунд (или нажмите кнопку ниже):</p>
+      <button class="btn btn-outline" id="btnWaitRefresh" onclick="refreshState(true)">Обновить статус</button>
+      <div id="waitStatusHint" class="hint" style="margin-top:8px; margin-bottom:0; font-size:13px;"></div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-outline" style="padding:7px 12px; font-size:12px; color:var(--mute);" onclick="changeTeamPrompt()">Ошиблись командой? Выбрать заново</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Этап 1: Сбор правил (только для первого верифицированного участника команды) -->
+  <div id="userCollectView" class="hidden">
+    <div id="allDoneBanner" class="all-done-banner hidden">
+      <h3>✔ Отлично! Ваши ответы зафиксированы</h3>
+      <p>Все 5 ценностей вашей команды заполнены. Ожидайте начала голосования — экран переключится автоматически. При желании вы можете выбрать любую вкладку ниже и отредактировать текст.</p>
+    </div>
+    <div class="card">
+      <h2>Этап 1: Ввод правил от <span id="collectTeamLabel"></span></h2>
+      <p class="hint">Вы — верифицированный представитель команды (<strong id="collectLeadName"></strong>). Внесите по 1 согласованной паре правил в каждую из 5 ценностей (оба поля обязательны).</p>
+      <div class="val-tabs" id="collectTabs"></div>
+      <div id="collectFormArea">
+        <label class="field-label" style="color: var(--green-dark);">✔ В СЛОЖНЫХ СИТУАЦИЯХ МЫ ДЕЛАЕМ (НАШ СТАНДАРТ):</label>
+        <textarea id="inputDo" placeholder="Например: Предупреждаем коллегу за 24 часа при риске сдвига срока и сразу предлагаем 2 варианта решения"></textarea>
+
+        <label class="field-label" style="color: var(--orange-dark);">✖ МЫ НЕ ДЕЛАЕМ (ОТ ЧЕГО ОТКАЗЫВАЕМСЯ):</label>
+        <textarea id="inputDont" placeholder="Например: Не молчим до дня дедлайна и не ставим смежный отдел перед фактом задержки"></textarea>
+
+        <button class="btn btn-green btn-full" id="btnSaveRule" onclick="sendRule()">Сохранить правило для этой ценности</button>
+        <div id="collectMsg"></div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <p class="hint" style="margin-bottom:8px;">Когда тренер откроет этап голосования, экран обновится автоматически (или нажмите кнопку ниже):</p>
+      <button class="btn btn-outline" id="btnManualRefresh" onclick="refreshState(true)">Обновить статус</button>
+      <div id="refreshStatusHint" class="hint" style="margin-top:8px; margin-bottom:0; font-size:13px;"></div>
+    </div>
+  </div>
+
+  <!-- Этап 2: Раздельное голосование (открывается у ВСЕХ участников команды) -->
+  <div id="userVoteView" class="hidden">
+    <div class="card">
+      <h2>Этап 2: Голосование за ТОП-1 правила</h2>
+      <p class="hint">Вы голосуете как участник <strong id="voteTeamLabel"></strong>. Формулировки вашей команды скрыты автоматически. В каждой из 5 ценностей выберите <strong>1 лучшее «МЫ ДЕЛАЕМ»</strong> и <strong>1 лучшее «МЫ НЕ ДЕЛАЕМ»</strong>.</p>
+      <div class="val-tabs" id="voteTabs"></div>
+      <div id="voteOptionsArea"></div>
+      <div style="margin-top:16px;">
+        <button class="btn btn-orange btn-full" id="btnSubmitVotes" onclick="sendAllVotes()">Отправить мой голос по всем 5 ценностям</button>
+        <div id="voteMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Этап 3: Итоги на телефоне -->
+  <div id="userResultsView" class="hidden">
+    <div class="card">
+      <h2>Голосование завершено!</h2>
+      <p class="hint">Ниже — утверждённые командой <strong>ТОП-1 «МЫ ДЕЛАЕМ»</strong> и <strong>ТОП-1 «МЫ НЕ ДЕЛАЕМ»</strong> по каждой из 5 ценностей «Глобус».</p>
+      <div id="userWinnersList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ЭКРАН ТРЕНЕРА / ТВ В ПЕРЕГОВОРНОЙ ==================== -->
+<div id="tvApp" class="container tv-wide hidden">
+  <!-- Экран запуска новой комнаты / возврата в существующую -->
+  <div id="tvLobbyView" class="hidden" style="max-width:680px; margin:0 auto;">
+    <div class="card">
+      <h2>Запуск новой сессии голосования</h2>
+      <p class="hint">Укажите название отдела или группы — система создаст <strong>отдельную независимую комнату</strong> со своим QR-кодом. Несколько руководителей могут проводить тренинги одновременно, не мешая друг другу, а итоги каждого проведения сохранятся в отдельный лист Google Таблицы.</p>
+      <label class="field-label" for="deptNameInput">Название подразделения / группы КО:</label>
+      <input type="text" id="deptNameInput" placeholder="Например: Отдел закупок или ИТ-дирекция" />
+      <button class="btn btn-green btn-full" id="btnCreateRoom" onclick="createNewRoom()">Создать комнату и показать QR-код</button>
+      <div id="lobbyMsg"></div>
+    </div>
+    <div class="card hidden" id="recentRoomsCard">
+      <h2 style="font-size:16px;">Или вернитесь в уже созданную комнату:</h2>
+      <div id="recentRoomsList" style="display:flex; flex-direction:column; gap:8px; margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- Рабочая панель активной комнаты на ТВ -->
+  <div id="tvActiveView" class="hidden">
+    <div class="tv-controls">
+      <div class="tv-btn-group">
+        <button class="btn btn-outline" id="btnStageCollect" onclick="changeStage('collect')">1. Сбор правил (5 групп)</button>
+        <button class="btn btn-green" id="btnStageVote" onclick="changeStage('vote')">2. Открыть голосование</button>
+        <button class="btn btn-orange" id="btnStageResults" onclick="changeStage('results')">3. Показать ТОП-5 Манифеста</button>
+      </div>
+      <div class="tv-btn-group">
+        <span id="tvVotersCounter" style="font-weight:800; font-size:15px; align-self:center; margin-right:10px; color:var(--green-dark);"></span>
+        <button class="btn btn-outline" onclick="openTvLobby()">Сменить / Новая комната</button>
+      </div>
+    </div>
+
+    <div id="reportSavedBanner" class="all-done-banner hidden">
+      <h3>✔ Отчёт сохранён в отдельный лист Google Таблицы</h3>
+      <p id="reportSavedText"></p>
+    </div>
+
+    <div class="tv-grid-2">
+      <!-- Левая колонка: QR-код -->
+      <div class="qr-box">
+        <h3 style="color:var(--green-dark); margin-bottom:4px;">Подключайтесь со смартфона</h3>
+        <p style="font-size:13px; color:var(--mute);">Комната: <strong id="qrRoomCode" style="color:var(--orange-dark);"></strong></p>
+        <img id="qrImage" src="" alt="QR-код для участников" />
+        <div class="qr-url" id="qrUrlText"></div>
+        <div class="qr-short-box">
+          <label class="field-label" style="font-size:11px; color:var(--mute);">Своя короткая ссылка для этой комнаты (если нужно):</label>
+          <input type="text" id="shortUrlInput" placeholder="Оставьте пустым — ссылка и так короткая" />
+          <button class="btn btn-outline btn-full" style="padding:7px; font-size:12px;" onclick="applyShortUrl()">Обновить QR-код</button>
+        </div>
+      </div>
+
+      <!-- Правая колонка: Динамический контент этапа -->
+      <div id="tvMainPanel"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /**
+   * ССЫЛКА НА ВАШ GOOGLE APPS SCRIPT (чистая, без /u/5/ — работает в фоне как база данных)
+   * Если вы создадите НОВОЕ развёртывание, просто обновите эту строку.
+   */
+  const API_URL = 'https://script.google.com/macros/s/AKfycbw9kA_coXBtIsIU1P44h9f0TrXOcLrBqUT4qCSUC0TxxgaxdHt7X8o0p6IjyP60ReCj/exec';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const INITIAL_MODE = urlParams.get('mode') === 'tv' ? 'tv' : 'user';
+  const APP_URL = window.location.origin + window.location.pathname;
+  let currentSessionId = (urlParams.get('session') || '').trim().toUpperCase();
+
+  let state = null;
+  let myTeam = localStorage.getItem('globus_kk_team') || '';
+  let myName = localStorage.getItem('globus_kk_name') || '';
+  let myRegisteredSession = localStorage.getItem('globus_kk_reg_session') || '';
+  let myVoterId = localStorage.getItem('globus_kk_voter_id') || ('U' + Math.random().toString(36).slice(2, 10) + Date.now());
+  localStorage.setItem('globus_kk_voter_id', myVoterId);
+
+  let activeCollectValId = 'v1';
+  let activeVoteValId = 'v1';
+  let userChoices = {};
+  let hasVotedSessions = JSON.parse(localStorage.getItem('globus_kk_voted_sessions') || '{}');
+  let pollTimer = null;
+
+  /* ==================== СЕТЕВЫЕ ЗАПРОСЫ К GOOGLE ТАБЛИЦЕ (БЕЗ COOKIE GOOGLE!) ==================== */
+  async function apiGetState(sessionId) {
+    const q = sessionId ? ('?session=' + encodeURIComponent(sessionId) + '&t=' + Date.now()) : ('?t=' + Date.now());
+    const res = await fetch(API_URL + q, {
+      method: 'GET',
+      credentials: 'omit',
+      redirect: 'follow'
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  }
+
+  async function apiPost(action, payload) {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      credentials: 'omit',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: action, payload: payload || {} })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  }
+
+  function showGlobalError(text) {
+    const box = document.getElementById('globalErrBox');
+    const txt = document.getElementById('globalErrText');
+    if (text) {
+      txt.textContent = text;
+      box.classList.remove('hidden');
+    } else {
+      box.classList.add('hidden');
+    }
+  }
+
+  function updateQrDisplay() {
+    if (!currentSessionId) return;
+    const shortKey = 'globus_kk_short_url_' + currentSessionId;
+    const customShort = localStorage.getItem(shortKey) || '';
+    const roomUserUrl = APP_URL + '?session=' + encodeURIComponent(currentSessionId);
+    const linkToEncode = customShort || roomUserUrl;
+    const shortInput = document.getElementById('shortUrlInput');
+    if (shortInput) shortInput.value = customShort;
+    document.getElementById('qrRoomCode').textContent = currentSessionId;
+    document.getElementById('qrUrlText').textContent = linkToEncode;
+    document.getElementById('qrImage').src =
+      'https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=16&ecc=L&data=' + encodeURIComponent(linkToEncode);
+  }
+
+  function applyShortUrl() {
+    if (!currentSessionId) return;
+    const shortKey = 'globus_kk_short_url_' + currentSessionId;
+    const val = document.getElementById('shortUrlInput').value.trim();
+    if (val) localStorage.setItem(shortKey, val);
+    else localStorage.removeItem(shortKey);
+    updateQrDisplay();
+  }
+
+  function init() {
+    if (INITIAL_MODE === 'tv') {
+      document.getElementById('tvApp').classList.remove('hidden');
+      if (currentSessionId) {
+        enterTvRoom(currentSessionId);
+      } else {
+        openTvLobby();
+      }
+    } else {
+      document.getElementById('userApp').classList.remove('hidden');
+      if (myTeam) document.getElementById('myTeamSelect').value = myTeam;
+      if (myName) document.getElementById('myNameInput').value = myName;
+      if (!currentSessionId) {
+        document.getElementById('teamSetupCard').classList.add('hidden');
+        document.getElementById('roomCodeCard').classList.remove('hidden');
+        document.getElementById('stageBadge').textContent = 'Введите код комнаты';
+      } else {
+        startUserPolling();
+      }
+    }
+  }
+
+  /* ==================== УПРАВЛЕНИЕ КОМНАТАМИ ==================== */
+  async function openTvLobby() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    currentSessionId = '';
+    state = null;
+    window.history.replaceState({}, '', APP_URL + '?mode=tv');
+    document.getElementById('tvActiveView').classList.add('hidden');
+    document.getElementById('tvLobbyView').classList.remove('hidden');
+    document.getElementById('reportSavedBanner').classList.add('hidden');
+    document.getElementById('stageBadge').textContent = 'Выбор комнаты';
+
+    try {
+      const data = await apiGetState('');
+      showGlobalError('');
+      const listWrap = document.getElementById('recentRoomsList');
+      const card = document.getElementById('recentRoomsCard');
+      if (data && data.recentSessions && data.recentSessions.length > 0) {
+        card.classList.remove('hidden');
+        listWrap.innerHTML = '';
+        data.recentSessions.forEach(function(s) {
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-outline btn-full';
+          btn.style.justifyContent = 'space-between';
+          btn.innerHTML = '<span><strong>' + escapeHtml(s.department) + '</strong> (' + escapeHtml(s.sessionId) + ')</span><span style="font-size:12px; color:var(--mute);">' + escapeHtml(s.createdAt) + '</span>';
+          btn.onclick = function() { enterTvRoom(s.sessionId); };
+          listWrap.appendChild(btn);
+        });
+      } else {
+        card.classList.add('hidden');
+      }
+    } catch (err) {
+      showGlobalError('Не удалось подключиться к Google Таблице. Убедитесь, что в Apps Script обновлён Code.gs и опубликована «Новая версия» с доступом «Все».');
+    }
+  }
+
+  async function createNewRoom() {
+    const dept = document.getElementById('deptNameInput').value.trim();
+    const msg = document.getElementById('lobbyMsg');
+    if (!dept) {
+      msg.innerHTML = '<div class="msg msg-err">Укажите название отдела или группы.</div>';
+      return;
+    }
+    msg.innerHTML = '';
+    const btn = document.getElementById('btnCreateRoom');
+    btn.disabled = true;
+    btn.textContent = 'Создаю комнату...';
+    try {
+      const res = await apiPost('createSession', { department: dept });
+      btn.disabled = false;
+      btn.textContent = 'Создать комнату и показать QR-код';
+      if (res.ok) {
+        enterTvRoom(res.sessionId);
+      } else {
+        msg.innerHTML = '<div class="msg msg-err">' + escapeHtml(res.error || 'Ошибка создания комнаты') + '</div>';
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Создать комнату и показать QR-код';
+      msg.innerHTML = '<div class="msg msg-err">Нет связи с сервером. Попробуйте ещё раз.</div>';
+    }
+  }
+
+  function enterTvRoom(sessionId) {
+    currentSessionId = sessionId;
+    window.history.replaceState({}, '', APP_URL + '?mode=tv&session=' + encodeURIComponent(sessionId));
+    document.getElementById('tvLobbyView').classList.add('hidden');
+    document.getElementById('tvActiveView').classList.remove('hidden');
+    document.getElementById('reportSavedBanner').classList.add('hidden');
+    updateQrDisplay();
+    refreshState(false);
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(function() { refreshState(false); }, 4000);
+  }
+
+  function joinRoomByCode() {
+    const code = document.getElementById('manualRoomInput').value.trim().toUpperCase();
+    const msg = document.getElementById('roomCodeMsg');
+    if (!code) {
+      msg.innerHTML = '<div class="msg msg-err">Введите код комнаты с экрана ТВ.</div>';
+      return;
+    }
+    msg.innerHTML = '';
+    currentSessionId = code;
+    window.history.replaceState({}, '', APP_URL + '?session=' + encodeURIComponent(code));
+    document.getElementById('roomCodeCard').classList.add('hidden');
+    startUserPolling();
+  }
+
+  function startUserPolling() {
+    refreshState(false);
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(function() { refreshState(false); }, 5000);
+  }
+
+  async function saveProfile() {
+    const t = document.getElementById('myTeamSelect').value;
+    const n = document.getElementById('myNameInput').value.trim();
+    const setupMsg = document.getElementById('setupMsg');
+    if (!t) {
+      setupMsg.innerHTML = '<div class="msg msg-err">Пожалуйста, выберите номер вашей мини-группы.</div>';
+      return;
+    }
+    if (!n) {
+      setupMsg.innerHTML = '<div class="msg msg-err">Пожалуйста, введите ваше имя для верификации.</div>';
+      return;
+    }
+    setupMsg.innerHTML = '';
+    const btn = document.getElementById('btnSaveProfile');
+    btn.disabled = true;
+    btn.textContent = 'Проверяю...';
+
+    try {
+      const res = await apiPost('registerParticipant', {
+        sessionId: currentSessionId,
+        voterId: myVoterId,
+        team: t,
+        name: n
+      });
+      btn.disabled = false;
+      btn.textContent = 'Пройти верификацию и продолжить';
+      if (!res.ok) {
+        setupMsg.innerHTML = '<div class="msg msg-err">' + escapeHtml(res.error || 'Ошибка верификации') + '</div>';
+        return;
+      }
+      myTeam = t;
+      myName = n;
+      myRegisteredSession = res.sessionId;
+      localStorage.setItem('globus_kk_team', myTeam);
+      localStorage.setItem('globus_kk_name', myName);
+      localStorage.setItem('globus_kk_reg_session', myRegisteredSession);
+      document.getElementById('teamSetupCard').classList.add('hidden');
+      refreshState(false);
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Пройти верификацию и продолжить';
+      setupMsg.innerHTML = '<div class="msg msg-err">Нет связи с таблицей. Попробуйте ещё раз через пару секунд.</div>';
+    }
+  }
+
+  function changeTeamPrompt() {
+    myRegisteredSession = '';
+    localStorage.removeItem('globus_kk_reg_session');
+    document.getElementById('userWaitView').classList.add('hidden');
+    document.getElementById('userCollectView').classList.add('hidden');
+    document.getElementById('teamSetupCard').classList.remove('hidden');
+  }
+
+  async function refreshState(isManual) {
+    const btnCollect = document.getElementById('btnManualRefresh');
+    const btnWait = document.getElementById('btnWaitRefresh');
+    const hintCollect = document.getElementById('refreshStatusHint');
+    const hintWait = document.getElementById('waitStatusHint');
+
+    if (isManual) {
+      if (btnCollect) { btnCollect.disabled = true; btnCollect.textContent = 'Проверяю...'; }
+      if (btnWait) { btnWait.disabled = true; btnWait.textContent = 'Проверяю...'; }
+    }
+
+    try {
+      const data = await apiGetState(currentSessionId);
+      if (data && data.ok === false) {
+        showGlobalError(data.error || 'Ошибка получения данных от скрипта.');
+        return;
+      }
+      showGlobalError('');
+      state = data;
+      updateStageBadge();
+      if (INITIAL_MODE === 'tv') renderTV();
+      else renderUser();
+
+      if (isManual) {
+        const now = new Date();
+        const ts = String(now.getHours()).padStart(2, '0') + ':' +
+                   String(now.getMinutes()).padStart(2, '0') + ':' +
+                   String(now.getSeconds()).padStart(2, '0');
+        const msgText = state.stage === 'collect'
+          ? 'Проверено в ' + ts + ' — сбор правил ещё идёт, ожидайте команды тренера.'
+          : 'Статус обновлён в ' + ts + '.';
+
+        if (btnCollect) { btnCollect.disabled = false; btnCollect.textContent = 'Обновить статус'; }
+        if (btnWait) { btnWait.disabled = false; btnWait.textContent = 'Обновить статус'; }
+        if (hintCollect) hintCollect.textContent = msgText;
+        if (hintWait) hintWait.textContent = msgText;
+      }
+    } catch (err) {
+      showGlobalError('Не удалось подключиться к Google Таблице. Убедитесь, что в Apps Script обновлён Code.gs и опубликована «Новая версия» с доступом «Все».');
+      if (isManual) {
+        if (btnCollect) { btnCollect.disabled = false; btnCollect.textContent = 'Обновить статус'; }
+        if (btnWait) { btnWait.disabled = false; btnWait.textContent = 'Обновить статус'; }
+      }
+    }
+  }
+
+  function updateStageBadge() {
+    const b = document.getElementById('stageBadge');
+    if (!state) return;
+    const deptPrefix = state.department ? (state.department + ' • ') : '';
+    if (state.stage === 'collect') b.textContent = deptPrefix + 'Этап 1: Сбор правил';
+    else if (state.stage === 'vote') b.textContent = deptPrefix + 'Этап 2: Голосование';
+    else b.textContent = deptPrefix + 'Этап 3: Итоговый Манифест';
+  }
+
+  /* ==================== ЛОГИКА УЧАСТНИКА ==================== */
+  function renderUser() {
+    if (!state) return;
+
+    document.getElementById('userWaitView').classList.add('hidden');
+    document.getElementById('userCollectView').classList.add('hidden');
+    document.getElementById('userVoteView').classList.add('hidden');
+    document.getElementById('userResultsView').classList.add('hidden');
+
+    if (!myTeam || !myName || myRegisteredSession !== state.sessionId) {
+      document.getElementById('teamSetupCard').classList.remove('hidden');
+      return;
+    }
+
+    document.getElementById('teamSetupCard').classList.add('hidden');
+
+    if (state.stage === 'collect') {
+      const leadInfo = (state.teamLeads && state.teamLeads[myTeam]) ? state.teamLeads[myTeam] : null;
+      const isTeamLead = leadInfo && (leadInfo.voterId === myVoterId);
+
+      if (isTeamLead) {
+        document.getElementById('userCollectView').classList.remove('hidden');
+        document.getElementById('collectTeamLabel').textContent = myTeam;
+        document.getElementById('collectLeadName').textContent = myName;
+        renderCollectTabs();
+      } else {
+        document.getElementById('userWaitView').classList.remove('hidden');
+        const leadNameText = (leadInfo && leadInfo.name) ? (' (' + leadInfo.name + ')') : '';
+        document.getElementById('waitLeadMessage').textContent =
+          'Один из участников вашей команды' + leadNameText + ' уже прошёл верификацию. Оставайтесь на этой странице и дождитесь начала голосования.';
+        document.getElementById('waitTeamInfo').textContent = myName + ' • ' + myTeam;
+      }
+    } else if (state.stage === 'vote') {
+      document.getElementById('userVoteView').classList.remove('hidden');
+      document.getElementById('voteTeamLabel').textContent = myTeam;
+      renderVoteUI();
+    } else {
+      document.getElementById('userResultsView').classList.remove('hidden');
+      document.getElementById('userWinnersList').innerHTML = buildWinnersHTML();
+    }
+  }
+
+  function renderCollectTabs() {
+    const wrap = document.getElementById('collectTabs');
+    wrap.innerHTML = '';
+    let savedCount = 0;
+    state.values.forEach(function(v) {
+      const existing = state.rules.find(r => r.team === myTeam && r.valueId === v.id);
+      if (existing) savedCount++;
+      const btn = document.createElement('button');
+      btn.className = 'val-tab' + (v.id === activeCollectValId ? ' active' : '') + (existing ? ' done' : '');
+      btn.textContent = (existing ? '✔ ' : '') + v.name;
+      btn.onclick = function() {
+        activeCollectValId = v.id;
+        loadCollectInputs();
+        renderCollectTabs();
+      };
+      wrap.appendChild(btn);
+    });
+
+    const doneBanner = document.getElementById('allDoneBanner');
+    if (doneBanner) {
+      if (savedCount >= state.values.length) doneBanner.classList.remove('hidden');
+      else doneBanner.classList.add('hidden');
+    }
+    loadCollectInputs();
+  }
+
+  let lastLoadedCollectKey = '';
+  function loadCollectInputs() {
+    const key = state.sessionId + '_' + myTeam + '_' + activeCollectValId;
+    if (lastLoadedCollectKey === key) return;
+    lastLoadedCollectKey = key;
+    const existing = state.rules.find(r => r.team === myTeam && r.valueId === activeCollectValId);
+    document.getElementById('inputDo').value = existing ? existing.doText : '';
+    document.getElementById('inputDont').value = existing ? existing.dontText : '';
+    document.getElementById('collectMsg').innerHTML = existing
+      ? '<div class="msg msg-ok">✔ Правило вашей команды для этой ценности уже сохранено (можно отредактировать).</div>'
+      : '';
+  }
+
+  async function sendRule() {
+    const doText = document.getElementById('inputDo').value.trim();
+    const dontText = document.getElementById('inputDont').value.trim();
+    const msg = document.getElementById('collectMsg');
+    if (!doText || !dontText) {
+      msg.innerHTML = '<div class="msg msg-err">Заполните оба поля: и «МЫ ДЕЛАЕМ», и «МЫ НЕ ДЕЛАЕМ».</div>';
+      return;
+    }
+    const btn = document.getElementById('btnSaveRule');
+    btn.disabled = true;
+    btn.textContent = 'Сохраняю...';
+
+    try {
+      const res = await apiPost('submitTeamRule', {
+        sessionId: currentSessionId,
+        voterId: myVoterId,
+        team: myTeam,
+        valueId: activeCollectValId,
+        doText: doText,
+        dontText: dontText
+      });
+      btn.disabled = false;
+      btn.textContent = 'Сохранить правило для этой ценности';
+      if (res.ok) {
+        const nextMissing = state.values.find(v =>
+          v.id !== activeCollectValId && !state.rules.some(r => r.team === myTeam && r.valueId === v.id)
+        );
+        if (nextMissing) {
+          msg.innerHTML = '<div class="msg msg-ok">✔ Сохранено! Переходите к следующей ценности: «' + escapeHtml(nextMissing.name) + '».</div>';
+        } else {
+          msg.innerHTML = '<div class="msg msg-ok">✔ Отлично! Все 5 ответов вашей команды зафиксированы, ожидайте начала голосования.</div>';
+        }
+        refreshState(false);
+      } else {
+        msg.innerHTML = '<div class="msg msg-err">' + escapeHtml(res.error || 'Ошибка сохранения') + '</div>';
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Сохранить правило для этой ценности';
+      msg.innerHTML = '<div class="msg msg-err">Ошибка связи при сохранении. Нажмите кнопку ещё раз.</div>';
+    }
+  }
+
+  function renderVoteUI() {
+    const alreadyVoted = !!hasVotedSessions[state.sessionId];
+    const btnSubmit = document.getElementById('btnSubmitVotes');
+    if (alreadyVoted) {
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = '✔ Ваш голос уже учтён!';
+    } else {
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = 'Отправить мой голос по всем 5 ценностям';
+    }
+
+    const tabsWrap = document.getElementById('voteTabs');
+    tabsWrap.innerHTML = '';
+    state.values.forEach(function(v) {
+      const ch = userChoices[v.id] || {};
+      const isDone = !!(ch.doRuleId && ch.dontRuleId);
+      const btn = document.createElement('button');
+      btn.className = 'val-tab' + (v.id === activeVoteValId ? ' active' : '') + (isDone ? ' done' : '');
+      btn.textContent = (isDone ? '✔ ' : '') + v.name;
+      btn.onclick = function() {
+        activeVoteValId = v.id;
+        renderVoteUI();
+      };
+      tabsWrap.appendChild(btn);
+    });
+
+    const area = document.getElementById('voteOptionsArea');
+    const foreignRules = state.rules.filter(r => r.valueId === activeVoteValId && r.team !== myTeam);
+    if (foreignRules.length === 0) {
+      area.innerHTML = '<p class="hint">По этой ценности пока нет вариантов от других команд.</p>';
+      return;
+    }
+
+    const ch = userChoices[activeVoteValId] || {};
+    let html = '<div class="vote-section-title do-title">✔ Выберите 1 лучшее правило «МЫ ДЕЛАЕМ»:</div>';
+    foreignRules.forEach(function(r) {
+      const sel = ch.doRuleId === r.ruleId ? ' selected-do' : '';
+      html += '<div class="vote-option' + sel + '" onclick="pickChoice(\'' + activeVoteValId + '\', \'do\', \'' + r.ruleId + '\')">' + escapeHtml(r.doText) + '</div>';
+    });
+
+    html += '<div class="vote-section-title dont-title">✖ Выберите 1 лучшее правило «МЫ НЕ ДЕЛАЕМ»:</div>';
+    foreignRules.forEach(function(r) {
+      const sel = ch.dontRuleId === r.ruleId ? ' selected-dont' : '';
+      html += '<div class="vote-option' + sel + '" onclick="pickChoice(\'' + activeVoteValId + '\', \'dont\', \'' + r.ruleId + '\')">' + escapeHtml(r.dontText) + '</div>';
+    });
+
+    area.innerHTML = html;
+  }
+
+  function pickChoice(valId, type, ruleId) {
+    if (hasVotedSessions[state.sessionId]) return;
+    if (!userChoices[valId]) userChoices[valId] = {};
+    if (type === 'do') userChoices[valId].doRuleId = ruleId;
+    else userChoices[valId].dontRuleId = ruleId;
+    renderVoteUI();
+  }
+
+  async function sendAllVotes() {
+    const msg = document.getElementById('voteMsg');
+    let missing = [];
+    state.values.forEach(function(v) {
+      const foreignCount = state.rules.filter(r => r.valueId === v.id && r.team !== myTeam).length;
+      if (foreignCount === 0) return;
+      const ch = userChoices[v.id] || {};
+      if (!ch.doRuleId || !ch.dontRuleId) missing.push(v.name);
+    });
+
+    if (missing.length > 0) {
+      msg.innerHTML = '<div class="msg msg-err">Пожалуйста, выберите оба варианта («Мы делаем» и «Мы не делаем») для ценностей: ' + missing.join(', ') + '</div>';
+      return;
+    }
+
+    const btn = document.getElementById('btnSubmitVotes');
+    btn.disabled = true;
+    btn.textContent = 'Отправляю голос...';
+
+    try {
+      const res = await apiPost('submitParticipantVotes', {
+        sessionId: currentSessionId,
+        voterId: myVoterId,
+        voterName: myName,
+        voterTeam: myTeam,
+        choices: userChoices
+      });
+      if (res.ok) {
+        hasVotedSessions[state.sessionId] = true;
+        localStorage.setItem('globus_kk_voted_sessions', JSON.stringify(hasVotedSessions));
+        btn.textContent = '✔ Ваш голос учтён!';
+        msg.innerHTML = '<div class="msg msg-ok">Спасибо! Ваш голос учтён — смотрите живые результаты на большом экране.</div>';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Отправить мой голос по всем 5 ценностям';
+        msg.innerHTML = '<div class="msg msg-err">' + escapeHtml(res.error || 'Ошибка отправки') + '</div>';
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Отправить мой голос по всем 5 ценностям';
+      msg.innerHTML = '<div class="msg msg-err">Ошибка связи при отправке голоса. Нажмите кнопку ещё раз.</div>';
+    }
+  }
+
+  /* ==================== ЛОГИКА ЭКРАНА ТВ ТРЕНЕРА ==================== */
+  function renderTV() {
+    if (!state) return;
+    document.getElementById('tvVotersCounter').textContent =
+      'Правил: ' + state.rules.length + ' / 25  |  Проголосовало: ' + state.totalVoters;
+
+    const panel = document.getElementById('tvMainPanel');
+    if (state.stage === 'collect') {
+      const allReady = state.rules.length >= (state.teams.length * state.values.length);
+      let html = '';
+      if (allReady) {
+        html += '<div class="all-done-banner"><h3>✔ Отлично! Все 5 команд зафиксировали ответы (25 из 25)</h3><p>Нажмите зелёную кнопку <strong>«2. Открыть голосование»</strong> сверху, чтобы у всех участников на смартфонах открылось голосование.</p></div>';
+      }
+      html += '<div class="card"><h2>Матрица готовности 5 мини-групп</h2><p class="hint">Первый верифицированный участник от каждой команды вносит по 1 паре («Мы делаем» + «Мы не делаем») в каждую ценность:</p><table class="matrix"><thead><tr><th>Мини-группа</th>';
+      state.values.forEach(v => html += '<th>' + v.name + '</th>');
+      html += '<th>Итог</th></tr></thead><tbody>';
+      state.teams.forEach(function(team) {
+        let teamDone = 0;
+        const lead = (state.teamLeads && state.teamLeads[team]) ? state.teamLeads[team] : null;
+        const leadBadge = lead ? '<span class="lead-tag">Вводит: ' + escapeHtml(lead.name) + '</span>' : '<span class="lead-tag">Ждём представителя</span>';
+        let rowHtml = '<tr><td><strong>' + team + '</strong>' + leadBadge + '</td>';
+        state.values.forEach(function(v) {
+          const ok = state.rules.some(r => r.team === team && r.valueId === v.id);
+          if (ok) teamDone++;
+          rowHtml += ok ? '<td class="cell-ok">✔ Готово</td>' : '<td class="cell-wait">Ожидание...</td>';
+        });
+        rowHtml += teamDone === state.values.length
+          ? '<td class="cell-ok">✔ 5 / 5</td></tr>'
+          : '<td class="cell-wait">' + teamDone + ' / 5</td></tr>';
+        html += rowHtml;
+      });
+      html += '</tbody></table></div>';
+      panel.innerHTML = html;
+    } else if (state.stage === 'vote') {
+      let html = '';
+      state.values.forEach(function(v) {
+        const vRules = state.rules.filter(r => r.valueId === v.id);
+        const maxDo = Math.max(1, ...vRules.map(r => state.doCounts[r.ruleId] || 0));
+        const maxDont = Math.max(1, ...vRules.map(r => state.dontCounts[r.ruleId] || 0));
+
+        const sortedDo = [...vRules].sort((a, b) => (state.doCounts[b.ruleId] || 0) - (state.doCounts[a.ruleId] || 0));
+        const sortedDont = [...vRules].sort((a, b) => (state.dontCounts[b.ruleId] || 0) - (state.dontCounts[a.ruleId] || 0));
+
+        html += '<div class="tv-val-card"><div class="tv-val-header">' + v.name + '</div><div class="tv-two-cols">';
+        html += '<div><div class="vote-section-title do-title">✔ МЫ ДЕЛАЕМ (лидеры)</div>';
+        sortedDo.forEach(function(r) {
+          const c = state.doCounts[r.ruleId] || 0;
+          const pct = Math.round((c / maxDo) * 100);
+          html += '<div class="bar-row"><div class="bar-label"><span>' + escapeHtml(r.doText) + '</span><span class="bar-votes" style="color:var(--green-dark)">' + c + '</span></div><div class="bar-track"><div class="bar-fill-do" style="width:' + pct + '%"></div></div></div>';
+        });
+        html += '</div>';
+
+        html += '<div><div class="vote-section-title dont-title">✖ МЫ НЕ ДЕЛАЕМ (лидеры)</div>';
+        sortedDont.forEach(function(r) {
+          const c = state.dontCounts[r.ruleId] || 0;
+          const pct = Math.round((c / maxDont) * 100);
+          html += '<div class="bar-row"><div class="bar-label"><span>' + escapeHtml(r.dontText) + '</span><span class="bar-votes" style="color:var(--orange-dark)">' + c + '</span></div><div class="bar-track"><div class="bar-fill-dont" style="width:' + pct + '%"></div></div></div>';
+        });
+        html += '</div></div></div>';
+      });
+      panel.innerHTML = html;
+    } else {
+      panel.innerHTML = '<div class="card"><h2>Итоговый Командный Манифест (ТОП-1 по каждой ценности)</h2><p class="hint">Переносим эти 5 правил-победителей на широкоформатный плакат А1 и подписываем всей командой:</p>' + buildWinnersHTML() + '</div>';
+    }
+  }
+
+  function buildWinnersHTML() {
+    let html = '';
+    state.values.forEach(function(v, idx) {
+      const vRules = state.rules.filter(r => r.valueId === v.id);
+      if (vRules.length === 0) return;
+      const winDo = [...vRules].sort((a, b) => (state.doCounts[b.ruleId] || 0) - (state.doCounts[a.ruleId] || 0))[0];
+      const winDont = [...vRules].sort((a, b) => (state.dontCounts[b.ruleId] || 0) - (state.dontCounts[a.ruleId] || 0))[0];
+      const cDo = state.doCounts[winDo.ruleId] || 0;
+      const cDont = state.dontCounts[winDont.ruleId] || 0;
+      html += '<div class="manifest-winner"><h3>' + (idx + 1) + '. ' + v.name + '</h3>' +
+        '<div class="win-box-do"><strong>✔ МЫ ДЕЛАЕМ (' + cDo + ' гол.):</strong> ' + escapeHtml(winDo.doText) + '</div>' +
+        '<div class="win-box-dont"><strong>✖ МЫ НЕ ДЕЛАЕМ (' + cDont + ' гол.):</strong> ' + escapeHtml(winDont.dontText) + '</div></div>';
+    });
+    return html || '<p class="hint">Пока нет сохранённых правил.</p>';
+  }
+
+  async function changeStage(newStage) {
+    try {
+      const res = await apiPost('setStage', { sessionId: currentSessionId, newStage: newStage });
+      if (res && res.reportSheetName) {
+        const banner = document.getElementById('reportSavedBanner');
+        document.getElementById('reportSavedText').textContent =
+          'Лист «' + res.reportSheetName + '» создан в вашей Google Таблице (итоговый ТОП-5 Манифеста + все варианты всех команд).';
+        banner.classList.remove('hidden');
+      } else if (newStage !== 'results') {
+        document.getElementById('reportSavedBanner').classList.add('hidden');
+      }
+      refreshState(false);
+    } catch (err) {
+      showGlobalError('Не удалось переключить этап. Проверьте интернет и попробуйте снова.');
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  init();
+</script>
+</body>
+</html>
